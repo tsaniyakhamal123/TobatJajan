@@ -2,7 +2,18 @@ import mongoose from "mongoose";
 
 const incomeSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  source: { type: String, required: true }, // contoh: gaji, hadiah, freelance
+  source: {
+    type: String,
+    required: true,
+    enum: [
+      "Gaji pokok",
+      "Uang Saku",
+      "Freelance",
+      "Project",
+      "Tunjangan",
+      "lain lain",
+    ],
+  },
   amount: { type: Number, required: true },
   description: String,
   date: { type: Date, default: Date.now },

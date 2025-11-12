@@ -5,11 +5,11 @@ import bcrypt from "bcryptjs";
 //buat generate token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "7d", // token berlaku 7 hari
+    expiresIn: "7d", 
   });
 };
 
-// Register user baru
+// Register user 
 export const register = async (req, res) => {
   const { name, email, password, monthlyIncome } = req.body;
 
@@ -23,7 +23,7 @@ export const register = async (req, res) => {
       email,
       password,
       monthlyIncome: monthlyIncome || 0,
-      balance: monthlyIncome || 0, // saldo awal = income awal
+      balance: monthlyIncome || 0, 
     });
 
     await user.save();
@@ -50,22 +50,15 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Cek apakah user ada
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
-    // Bandingkan password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
-
-    // Buat token baru
     const token = generateToken(user._id);
-
-    // Kirim response sukses
     res.status(200).json({
       _id: user._id,
       name: user.name,

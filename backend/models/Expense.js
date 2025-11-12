@@ -14,6 +14,7 @@ const expenseSchema = new mongoose.Schema({
       "Tabungan & Investasi",
       "Hiburan",
       "Kesehatan & Self Care",
+      "lain lain",
     ],
   },
   amount: { type: Number, required: true },

@@ -1,11 +1,14 @@
 import Expense from "../models/Expense.js";
+//import User from "../models/User.js";
 import { updateGamification } from "../services/expenseLogic.js";
 
-// ✅ Tambah pengeluaran baru
+/**
+ * Tambahkan pengeluaran baru dan update sistem gamifikasi user
+ */
 export const addExpense = async (req, res) => {
-  const { category, amount, description } = req.body;
-
   try {
+    const { category, amount, description } = req.body;
+
     const newExpense = new Expense({
       userId: req.user._id,
       category,
@@ -19,17 +22,22 @@ export const addExpense = async (req, res) => {
 
     res.status(201).json({
       message: "Pengeluaran berhasil ditambahkan 💸",
+      expense: newExpense,
       xpChange: gamify.xpChange,
       newLevel: gamify.newLevel,
       newStreak: gamify.newStreak,
+      xpRulesUsed: gamify.xpRules,
+      impactFactor: gamify.impactFactor,
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Gagal menambahkan pengeluaran", error: err.message });
+    res.status(500).json({
+      message: "Gagal menambahkan pengeluaran",
+      error: err.message,
+    });
   }
 };
 
-// ✅ Ambil semua pengeluaran milik user
+// GET semua pengeluaran milik user
 export const getMyExpenses = async (req, res) => {
   try {
     const expenses = await Expense.find({ userId: req.user._id }).sort({ date: -1 });
@@ -39,7 +47,7 @@ export const getMyExpenses = async (req, res) => {
   }
 };
 
-// ✅ Update pengeluaran
+// Update pengeluaran
 export const updateExpense = async (req, res) => {
   const { id } = req.params;
   const { category, amount, description } = req.body;
@@ -57,10 +65,8 @@ export const updateExpense = async (req, res) => {
     expense.description = description || expense.description;
 
     await expense.save();
-
     // Update sistem gamifikasi berdasarkan pengeluaran baru
     const gamify = await updateGamification(req.user._id, expense);
-
     res.status(200).json({
       message: "Pengeluaran berhasil diperbarui ✨",
       updatedExpense: expense,
@@ -73,7 +79,7 @@ export const updateExpense = async (req, res) => {
   }
 };
 
-// ✅ Hapus pengeluaran
+// Hapus pengeluaran
 export const deleteExpense = async (req, res) => {
   try {
     const expense = await Expense.findOneAndDelete({
