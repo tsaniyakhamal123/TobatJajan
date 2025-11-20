@@ -1,50 +1,53 @@
 import Income from "../models/Income.js";
 import User from "../models/User.js";
+import { runAIMicroGamificationEvent } from "./aiController.js";
 
+/**
+ * MENCATAT PEMASUKAN (INCOME)
+ * Ini akan user.balance += amount
+ * 'set nilai awal' balance
+ */
 export const addIncome = async (req, res) => {
   try {
-    const { source, amount, description } = req.body;
+    const { amount, description, source } = req.body;
+    const user = await User.findById(req.user.id);
 
-    const validSources = ["Gaji Pokok", "Uang Saku", "Freelance", "Project", "Tunjangan", "Lain-lain"];
-    if (!validSources.includes(source)) {
-      return res.status(400).json({
-        message: `Sumber pemasukan tidak valid. Gunakan salah satu dari: ${validSources.join(", ")}`,
-      });
+    if (!user.aiInsights?.xpRules) {
+      return res.status(400).json({ message: "Gamifikasi belum siap." });
     }
 
-    const incomeAmount = Number(amount);
-    if (isNaN(incomeAmount) || incomeAmount <= 0) {
-      return res.status(400).json({ message: "Nominal pemasukan harus berupa angka positif" });
-    }
-
-    const user = await User.findById(req.user._id);
-    if (!user) return res.status(404).json({ message: "User tidak ditemukan" });
-
-    const newIncome = new Income({
-      userId: user._id,
+    const income = new Income({
+      userId: user.id,
+      amount,
+      description,
       source,
-      amount: incomeAmount,
-      description: description?.trim(),
     });
 
-    await newIncome.save();
+    await income.save();
 
-    user.balance = (user.balance || 0) + incomeAmount;
-    user.income = (user.income || 0) + incomeAmount; 
+    user.balance += amount;
+    const ai = await runAIMicroGamificationEvent(user, "income", income);
+    user.xp += ai.xpAdjustment;
+    user.streak += ai.streakEffect;
+    user.level = Math.floor(user.xp / 100) + 1;
+    user.aiInsights.lastAdvice = ai.advice;
+
     await user.save();
 
     res.status(201).json({
-      message: "Pemasukan berhasil ditambahkan",
-      income: newIncome,
-      newBalance: user.balance,
+      message: "Pemasukan berhasil dicatat!",
+      newIncome: income,
+      balance: user.balance,
+      xp: user.xp,
+      level: user.level,
+      streak: user.streak,
+      ai,
     });
+
   } catch (err) {
-    res.status(500).json({
-      message: "Gagal menambah pemasukan",
-      error: err.message,
-    });
+    res.status(500).json({ message: "Gagal mencatat pemasukan", error: err.message });
   }
-};
+}
 
 // GET semua income user
 export const getUserIncome = async (req, res) => {

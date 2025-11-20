@@ -1,0 +1,140 @@
+
+:global(html, body, #root) {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.pageWrapper {
+  min-height: 100vh;
+  width: 100vw;
+  background-color: #a3b899;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Card */
+.card {
+  background-color: #4f7852;
+  border-radius: 25px;
+  padding: 40px 45px;
+  width: 100%;
+  max-width: 420px;
+  border: 3px solid #ffdddd;
+  box-sizing: border-box;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+}
+
+
+
+/* Logo */
+.logoWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 130px;
+}
+
+/* Label */
+.label {
+  text-align: left;
+  font-weight: bold;
+  color: white;
+  display: block;
+  margin-bottom: 8px;
+  margin-top: 18px;
+}
+
+/* Input */
+.input {
+  width: 100%;
+  padding: 12px 18px;
+  border-radius: 30px;
+  border: none;
+  font-size: 15px;
+  margin-bottom: 5px;
+  background: white;
+  color: black;
+  box-sizing: border-box;
+}
+
+.input::placeholder {
+  color: #8d8d8d;
+  font-style: italic;
+}
+
+/* Password wrapper */
+.passwordWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.passwordInput {
+  width: 100%;
+  padding: 12px 45px 12px 18px;
+  border-radius: 30px;
+  border: none;
+  font-size: 15px;
+  background: white;
+  color: black;
+  box-sizing: border-box;
+}
+
+.eyeIcon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/* Button */
+.button {
+  margin-top: 25px;
+  width: 100%;
+  padding: 12px;
+  background-color: black;
+  color: #41b66e;
+  font-weight: bold;
+  font-size: 18px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.button:hover {
+  transform: scale(1.03);
+}
+
+/* Error & Success */
+.error {
+  color: #ffdddd;
+  margin-top: 15px;
+}
+
+.success {
+  color: #c0ffd0;
+  margin-top: 15px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .card {
+    padding: 30px 28px;
+  }
+
+  .logo {
+    width: 110px;
+  }
+}

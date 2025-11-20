@@ -1,0 +1,130 @@
+/* src/components/Sidebar.module.css */
+
+/* --- Base Styles (Desktop) --- */
+.sidebar {
+  height: 100vh;
+  background-color: #357a62;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+  overflow-x: hidden;
+  white-space: nowrap;
+}
+
+/* State Desktop: Expanded vs Collapsed */
+.expanded {
+  width: 250px;
+}
+
+.collapsed {
+  width: 70px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 0 10px;
+}
+
+.menuItem {
+  cursor: pointer;
+  padding: 12px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  transition: background 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Jarak icon dan teks */
+}
+
+.menuItem:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Teks menu & tombol (disembunyikan saat collapsed di desktop) */
+.collapsed .menuText,
+.collapsed .logoutText {
+  display: none; /* Hilang saat sidebar kecil */
+}
+
+.collapsed .menuItem {
+  justify-content: center; /* Icon di tengah saat kecil */
+}
+
+/* Tombol Toggle (Hamburger Desktop) */
+.toggleBtn {
+  font-size: 24px;
+  cursor: pointer;
+  padding: 20px;
+  display: block;
+}
+
+/* Bagian Bawah */
+.bottomSection {
+  padding: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.logoutBtn {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  width: 100%;
+}
+
+.logoutIcon {
+  width: 24px; 
+  height: 24px;
+}
+
+/* --- RESPONSIVE MOBILE (Max Width 768px) --- */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 250px !important; /* Di HP lebar selalu 250px saat buka */
+    transform: translateX(-100%); /* Default sembunyi ke kiri */
+  }
+
+  /* Class ini ditambahkan via React saat menu dibuka di HP */
+  .mobileOpen {
+    transform: translateX(0); /* Muncul */
+  }
+
+  /* Toggle button di dalam sidebar disembunyikan di HP (pake tombol close aja) */
+  .toggleBtn {
+    display: none; 
+  }
+
+  /* Overlay Gelap di belakang sidebar saat mobile */
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+  }
+
+  .overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
+}
