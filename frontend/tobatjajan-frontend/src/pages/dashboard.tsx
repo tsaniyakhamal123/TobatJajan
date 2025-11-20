@@ -33,21 +33,21 @@ interface ChatMessage {
 // =====================
 // API URLS (perbaikan: getStatus & history = token based)
 // =====================
-const API_URL_GETSTATUS = "http://localhost:5000/api/user/getStatus";
-const API_URL_HISTORY = "http://localhost:5000/api/user/history";
+const API_URL_GETSTATUS = "/api/user/getStatus";
+const API_URL_HISTORY = "/api/user/history";
 
-const API_URL_EXPENSE_BASE = "http://localhost:5000/api/expense";
-const API_URL_INCOME_BASE = "http://localhost:5000/api/income";
+const API_URL_EXPENSE_BASE = "/api/expense";
+const API_URL_INCOME_BASE = "/api/income";
 
-const API_URL_EXPENSE_ITEM = "http://localhost:5000/api/user/updateExpense/:id";
-const API_URL_INCOME_ITEM = "http://localhost:5000/api/user/updateIncome/:id";
+const API_URL_EXPENSE_ITEM = "/api/user/updateExpense/:id";
+const API_URL_INCOME_ITEM = "/api/user/updateIncome/:id";
 
 // Delete endpoints (memerlukan transaction id)
-const API_URL_DELETE_INCOME = "http://localhost:5000/api/user/deleteIncome/:id";
-const API_URL_DELETE_EXPENSE = "http://localhost:5000/api/user/deleteExpense/:id";
+const API_URL_DELETE_INCOME = "/api/user/deleteIncome/:id";
+const API_URL_DELETE_EXPENSE = "/api/user/deleteExpense/:id";
 
-const API_URL_MONTHLYREVIEW = "http://localhost:5000/api/ai/review";
-const API_URL_CHAT = "http://localhost:5000/api/ai/chat";
+const API_URL_MONTHLYREVIEW = "/api/ai/review";
+const API_URL_CHAT = "/api/ai/chat";
 
 function Dashboard() {
   const navigate = useNavigate();

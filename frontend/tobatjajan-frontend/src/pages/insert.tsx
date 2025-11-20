@@ -5,7 +5,7 @@ import axios from "axios";
 import styles from "./inser.module.css";
 import logoChar from "../assets/images/char.png";
 
-const API_URL = "http://localhost:5000/api/user/update";
+const API_URL = "/api/user/update";
 const token = localStorage.getItem("token");
 
 function InsertPage() {

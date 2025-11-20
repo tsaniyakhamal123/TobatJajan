@@ -5,7 +5,7 @@ import styles from "./Register.module.css";
 import logoTobatJajan from "../assets/images/logo.png";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
-const API_URL = "http://localhost:5000/api/auth/login";
+const API_URL = "/api/auth/login";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
