@@ -5,9 +5,13 @@ import axios from "axios";
 import styles from "./Register.module.css";
 import logoTobatJajan from "../assets/images/logo.png";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-const API_URL = "/api/auth/register";
+import { useNavigate } from "react-router-dom"; // ✅ tambah ini
+
+const API_URL = "api/auth/register";
 
 function RegisterPage() {
+  const navigate = useNavigate(); // ✅ tambah ini
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,9 +34,16 @@ function RegisterPage() {
       });
 
       setSuccess("Registrasi berhasil!");
+
+      // ✅ redirect ke halaman login setelah sukses
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000); // delay 1 detik biar user sempat lihat pesan sukses
+
       setName("");
       setEmail("");
       setPassword("");
+
     } catch (err: any) {
       setError(err.response?.data?.message || "Terjadi kesalahan");
     } finally {
@@ -81,11 +92,11 @@ function RegisterPage() {
             />
 
             <span
-            className={styles.eyeIcon}
-            onClick={() => setShowPassword(!showPassword)}
+              className={styles.eyeIcon}
+              onClick={() => setShowPassword(!showPassword)}
             >
-                {showPassword ? <FiEyeOff size={20}/> : <FiEye size={20}/> }
-                </span>
+              {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+            </span>
           </div>
 
           {error && <p className={styles.error}>{error}</p>}

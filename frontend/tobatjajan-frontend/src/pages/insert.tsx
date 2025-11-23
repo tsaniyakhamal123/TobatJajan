@@ -1,6 +1,6 @@
 // src/pages/InsertPage.tsx
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./inser.module.css";
 import logoChar from "../assets/images/char.png";
@@ -19,8 +19,12 @@ function InsertPage() {
   const [success, setSuccess] = useState("");
 
   const [showBubble, setShowBubble] = useState(false);
-
   const [aiOutput, setAiOutput] = useState<string | null>(null);
+
+  // AUTO SHOW BUBBLE WHEN PAGE OPEN
+  useEffect(() => {
+    setTimeout(() => setShowBubble(true), 300);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,6 +32,18 @@ function InsertPage() {
     setError("");
     setSuccess("");
     setAiOutput(null);
+
+    // ➤ Jika semua input kosong → langsung ke dashboard
+    const isAllEmpty =
+      monthlyIncome === "" &&
+      goalSaving === "" &&
+      goalDescription === "" &&
+      longTime === "";
+
+    if (isAllEmpty) {
+      window.location.href = "/dashboard";
+      return;
+    }
 
     try {
       const isAnyFilled =
@@ -61,37 +77,36 @@ function InsertPage() {
         setSuccess("Halo selamat datang di TobatJajan!");
       }
     } catch (err: any) {
-      console.log("Update error diabaikan:", err);
+      console.log("Update error:", err);
     } finally {
       setLoading(false);
-
-      if (!aiOutput) {
-        window.location.href = "/dashboard";
-      }
     }
   };
 
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.card}>
-
-        {/* TITLE DIPISAH */}
         <h2 className={styles.initialTitle}>Initial Level</h2>
 
         {/* LOGO + BUBBLE */}
         <div className={styles.logoWrapper}>
-
-          {/* Avatar */}
           <img
             src={logoChar}
             alt="Logo"
             className={styles.logo}
-            onClick={() => setShowBubble(!showBubble)}
+            onClick={() => setShowBubble(true)}
             style={{ cursor: "pointer" }}
           />
+        </div>
 
-          {/* Bubble Chat */}
-          {showBubble && (
+        {/* CHAT BUBBLE OVERLAY */}
+        {showBubble && (
+          <>
+            <div
+              className={styles.chatOverlay}
+              onClick={() => setShowBubble(false)}
+            ></div>
+
             <div className={styles.chatBubbleModern}>
               <h3 className={styles.chatTitle}>Hai! 👋</h3>
               <p className={styles.chatDesc}>
@@ -99,19 +114,17 @@ function InsertPage() {
                 TobatJajan bakal bantuin kamu buat nabung! 💚
               </p>
 
-              <div className={styles.chatButtons}>
-                <button
-                  className={styles.chatPrimary}
-                  onClick={() => setShowBubble(false)}
-                >
-                  Close
-                </button>
-              </div>
+              <button
+                className={styles.chatPrimary}
+                onClick={() => setShowBubble(false)}
+              >
+                Close
+              </button>
 
               <div className={styles.chatTail}></div>
             </div>
-          )}
-        </div>
+          </>
+        )}
 
         {/* FORM */}
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -151,9 +164,6 @@ function InsertPage() {
             onChange={(e) => setLongTime(e.target.value)}
           />
 
-          {error && <p className={styles.error}>{error}</p>}
-          {success && <p className={styles.success}>{success}</p>}
-
           <button className={styles.button} disabled={loading}>
             {loading ? "Loading..." : "Next"}
           </button>
@@ -169,7 +179,6 @@ function InsertPage() {
             </div>
 
             <h3 className={styles.popupTitle}>Saran dari TobatJajan ✨</h3>
-
             <pre className={styles.popupAdvice}>{aiOutput}</pre>
 
             <button
