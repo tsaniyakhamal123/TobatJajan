@@ -12,7 +12,17 @@
     }
   ],
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "backend/server.js" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/api/(.*)",
+      "destination": "backend/server.js"
+    },
+    {
+      "source": "/assets/(.*)",
+      "destination": "frontend/tobatjajan-frontend/assets/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "frontend/tobatjajan-frontend/index.html"
+    }
   ]
 }
