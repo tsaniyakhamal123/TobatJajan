@@ -17,8 +17,12 @@
       "destination": "backend/index.js"
     },
     {
+      "source": "/assets/(.*)",
+      "destination": "frontend/tobatjajan-frontend/assets/$1"
+    },
+    {
       "source": "/(.*)",
-      "destination": "frontend/tobatjajan-frontend/$1"
+      "destination": "frontend/tobatjajan-frontend/index.html"
     }
   ]
 }
