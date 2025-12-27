@@ -2,15 +2,22 @@
   "version": 2,
   "builds": [
     {
+      "src": "backend/server.js",
+      "use": "@vercel/node"
+    },
+    {
       "src": "frontend/tobatjajan-frontend/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "buildCommand": "cd frontend/tobatjajan-frontend && npm install && npm run build",
-        "distDir": "frontend/tobatjajan-frontend/dist"
+        "outputDirectory": "frontend/tobatjajan-frontend/dist"
       }
     }
   ],
   "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/backend/server.js"
+    },
     {
       "src": "/(.*)",
       "dest": "/frontend/tobatjajan-frontend/dist/index.html"
